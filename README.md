@@ -38,7 +38,7 @@ graph TD
     C --> D{Strategy Selection}
     D --> E[Strategy A: Direct Retrieval]
     D --> F[Strategy B: Query Expansion]
-    F --> G[Expand Query with Synonyms]
+    F --> G[LLM-Based Semantic Query Rewriting]
     G --> H[Retrieval Pipeline]
     E --> H
     H --> I[Encode Query with SentenceTransformers]
@@ -247,26 +247,44 @@ The `/api/search` endpoint outputs structured JSON comparing both strategies for
 
 ### Similarity Metric Choice
 
-**Cosine Similarity**: Chosen over Euclidean distance because:
-- Embeddings are normalized, making cosine similarity equivalent to dot product
-- Cosine similarity measures angular distance, better suited for high-dimensional semantic embeddings
-- More robust to vector magnitude differences
-- Standard choice for text similarity in NLP applications
+**Cosine Similarity** is used because:
+- Embeddings are normalized, making cosine similarity equivalent to dot product in FAISS.
+- Cosine is better suited for high-dimensional text embeddings because it measures angular similarity rather than raw distance.
+- It reduces the impact of vector magnitude and focuses on semantic direction.
+- It is the standard choice for text retrieval and semantic search tasks.
+
+**Euclidean Distance** is less ideal for this use case because:
+- It is sensitive to vector magnitude differences unless embeddings are carefully normalized.
+- In high dimensions, Euclidean distance can become less meaningful and harder to compare.
+- Cosine similarity better captures semantic closeness for text embeddings.
 
 ### Production Migration Path
 
-To migrate to Vertex AI Vector Search (Matching Engine):
-1. Replace SentenceTransformers with Vertex AI TextEmbeddingModel
-2. Use Vertex AI Vector Search for indexing and querying
-3. Implement actual LLM-based query expansion using GenerativeModel
-4. Deploy on GCP with proper authentication and monitoring
+To migrate this system to Vertex AI Vector Search (Matching Engine) in production:
+1. Replace the local SentenceTransformers model with Vertex AI `TextEmbeddingModel` (for example, `textembedding-gecko`).
+2. Use Vertex AI Vector Search / Matching Engine to create and manage a vector index instead of FAISS.
+3. Store document chunk metadata alongside vectors so the system can return text chunks and rankings in search results.
+4. Keep cosine similarity or dot-product matching as the metric, since Vertex AI matching supports both and cosine is preferred for embeddings.
+5. Implement actual LLM-based query expansion using Vertex AI Generative Models, rather than rule-based expansion.
+6. Deploy the backend in a GCP environment with proper IAM, logging, monitoring, and batching for inference throughput.
+
+### Test Coverage
+
+This project includes Pytest suites for:
+- verifying the retrieval pipeline logic and indexing behavior,
+- ensuring similarity scoring works as expected,
+- mocking the GCP SDK (`google.generativeai`) during query expansion.
+
+### Dev Evidence
+
+A `retrieval_benchmark.md` file is included in the repository showing the output of the Strategy A vs Strategy B comparison. This file documents the evaluation results from sample queries and captures the improvement achieved by query enhancement.
 
 ### Repository Contents
 
 - **Source Code**: Modular Python files in `backend/pkg/` for embedding, storage, and retrieval
-- **Tests**: Pytest suites can be added in `backend/tests/`
-- **Dev Evidence**: Benchmarking results available via API calls
-- **Documentation**: This README explains implementation choices and migration strategy
+- **Tests**: Pytest suites are available in `backend/tests/`
+- **Dev Evidence**: `retrieval_benchmark.md` records the sample Strategy A vs Strategy B comparison
+- **Documentation**: This README explains implementation choices, similarity metric selection, and Vertex AI migration path
 
 ## Contributing
 
