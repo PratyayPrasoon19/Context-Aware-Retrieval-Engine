@@ -30,6 +30,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Logistics Knowledge Base Search</h1>
+        <h2>Please refer to the "Sample Queries and Comparison Excel sheet" for sample questions and a comparison chart from root directory.</h2>
         <div className="search-container">
           <input
             type="text"

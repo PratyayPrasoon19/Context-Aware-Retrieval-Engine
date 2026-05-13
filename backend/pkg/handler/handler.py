@@ -1,5 +1,5 @@
 from pkg.services.query_expansion import query_expansion_llm, query_expansion_heuristic
-from pkg.services.rag_pipeline import retrieval_pipeline
+from pkg.services.rag_pipeline import rag_pipeline
 
 def handle_search_request(request_data):
     """
@@ -13,7 +13,7 @@ def handle_search_request(request_data):
         return {"error": "Query is required"}, 400
 
     # 1. Strategy A: Standard Retrieval
-    standard_results = retrieval_pipeline(query)
+    standard_results = rag_pipeline.retrieval_pipeline(query)
     
     # 2. Strategy B: AI-Enhanced (Expanded) Retrieval
     # you can switch between heuristic and LLM-based expansion by commenting/uncommenting the respective lines
@@ -22,7 +22,7 @@ def handle_search_request(request_data):
     # expanded_query = query_expansion_heuristic(query)
     expanded_query = query_expansion_llm(query)
     
-    expanded_results = retrieval_pipeline(expanded_query)
+    expanded_results = rag_pipeline.retrieval_pipeline(expanded_query)
 
     # 3. Format Response to requested JSON Schema
     response_payload = {
