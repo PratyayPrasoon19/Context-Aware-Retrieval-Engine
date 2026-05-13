@@ -15,9 +15,9 @@ def load_and_prepare_db(file_path):
         text = f.read()
 
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300,
-        chunk_overlap=50,
-        separators=["\n\n", "\n", ".", " "]
+        chunk_size=800,
+        chunk_overlap=120,
+        separators=["\n## ", "\n### ", "\n\n", "\n"]
     )
     chunks = splitter.split_text(text)
     

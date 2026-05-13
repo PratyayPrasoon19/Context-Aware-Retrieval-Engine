@@ -81,6 +81,24 @@ h1 {
   color: #ffd700;
 }
 
+.expanded-query {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.expanded-query strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.expanded-query p {
+  margin: 0;
+  word-break: break-word;
+}
+
 .result-item {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;

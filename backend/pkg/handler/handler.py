@@ -1,4 +1,4 @@
-from pkg.services.query_expansion import query_expansion
+from pkg.services.query_expansion import query_expansion_llm, query_expansion_heuristic
 from pkg.services.rag_pipeline import retrieval_pipeline
 
 def handle_search_request(request_data):
@@ -16,12 +16,18 @@ def handle_search_request(request_data):
     standard_results = retrieval_pipeline(query)
     
     # 2. Strategy B: AI-Enhanced (Expanded) Retrieval
-    expanded_query = query_expansion(query)
+    # you can switch between heuristic and LLM-based expansion by commenting/uncommenting the respective lines
+    # llm-based expansion is more accurate but also more expensive and slower, while heuristic is faster but less precise
+    
+    # expanded_query = query_expansion_heuristic(query)
+    expanded_query = query_expansion_llm(query)
+    
     expanded_results = retrieval_pipeline(expanded_query)
 
     # 3. Format Response to requested JSON Schema
     response_payload = {
         "query": query,
+        "expanded_query": expanded_query,
         "result": [
             {
                 "type": "regular_result",

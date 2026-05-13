@@ -48,6 +48,12 @@ function App() {
             {results.result.map((res, index) => (
               <div key={index} className="result-section">
                 <h3>{res.type === 'regular_result' ? 'Standard Results' : 'Expanded Results'}</h3>
+                {res.type === 'expanded_result' && results.expanded_query && (
+                  <div className="expanded-query">
+                    <strong>Expanded Query:</strong>
+                    <p>{results.expanded_query}</p>
+                  </div>
+                )}
                 <ul>
                   {res.response.map((item) => (
                     <li key={item.rank} className="result-item">

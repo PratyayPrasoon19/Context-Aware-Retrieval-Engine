@@ -1,0 +1,74 @@
+# ==============================================================================
+# ENVIRONMENT / SECRETS (Crucial for AI/API Projects)
+# ==============================================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+# Keep an example file tracked so others know what keys to use
+!.env.example
+
+# ==============================================================================
+# PYTHON (Backend / AI / RAG)
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.python-version
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Distribution / Packaging
+dist/
+build/
+*.egg-info/
+*.spec
+
+# AI/ML Specific (Vector DBs and Large Models)
+# Prevents accidental commits of multi-GB FAISS or Model files
+storage/
+data/
+index/
+*.faiss
+*.index
+*.pkl
+*.npy
+*.pt
+*.pth
+*.bin
+*.onnx
+
+# ==============================================================================
+# REACT / NODE (Frontend)
+# ==============================================================================
+node_modules/
+/build/
+/dist/
+.next/
+.turbo/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ==============================================================================
+# IDE & SYSTEM
+# ==============================================================================
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
